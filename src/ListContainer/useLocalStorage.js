@@ -5,7 +5,8 @@ function useLocalStorage(itemName, initialValue) {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [itemsToLoad] = React.useState(
-    JSON.parse(localStorage.getItem(itemName))
+    JSON.parse(localStorage.getItem(itemName)
+    )
   );
 
   React.useEffect(() => {

@@ -7,7 +7,6 @@ const StyledCircle = styled.div`
   width: 2rem;
   height: 2rem;
   background: var(--border-color);
-
 `;
 
 const StyledText = styled.div`
@@ -26,18 +25,21 @@ const StyledContainer = styled.div`
 `;
 
 function TodoLoading({ itemsToLoad }) {
-    console.log(itemsToLoad);
-  return (
-    <>
-      {itemsToLoad.map((todo) => (
-        <StyledContainer key={todo.text} >
-          <StyledCircle />
-          <StyledText />
-          <StyledCircle />
-        </StyledContainer>
-      ))}
-    </>
-  );
+  if (!itemsToLoad) {
+    return null;
+  } else {
+    return (
+      <>
+        {itemsToLoad.map((todo) => (
+          <StyledContainer key={todo.text}>
+            <StyledCircle />
+            <StyledText />
+            <StyledCircle />
+          </StyledContainer>
+        ))}
+      </>
+    );
+  }
 }
 
 export { TodoLoading };
