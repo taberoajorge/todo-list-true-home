@@ -7,7 +7,7 @@ Don't forget clone repo and execute:
 
 ### `npm install`
 
-###Then...
+Then...
 
 ## Available Scripts
 
