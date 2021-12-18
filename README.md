@@ -1,9 +1,13 @@
-# todo-list-true-home
+## TODO LIST 
  It's just a basic todo-list. Thanks for the opportunity, enjoy, future team!!
+ 
+## Important
 
-# Getting Started with Create React App
+Don't forget clone repo and execute:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### `npm install`
+
+###Then...
 
 ## Available Scripts
 
