@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledForm = styled.form`
   width: 30rem;
@@ -56,19 +56,19 @@ function TodoForm({ onOpenModal, createTodo, value}) {
 
   return (
     <StyledForm onSubmit={onCreateTodo}>
-      <StyledLabel htmlFor="todo">
+      <StyledLabel htmlFor='todo'>
         <span>Estas seguro de crear esta tarea?</span>
         <StyledInput
-          type="text"
-          id="todo"
+          type='text'
+          id='todo'
           defaultValue={value}
         />
         
         <div>
-        <StyledButton onClick={() => onOpenModal()} type="button">
+        <StyledButton onClick={() => onOpenModal()} type='button'>
           Cancelar
         </StyledButton>
-        <StyledButton type="submit" >Crear</StyledButton>
+        <StyledButton type='submit' >Crear</StyledButton>
         </div>
         
       </StyledLabel>

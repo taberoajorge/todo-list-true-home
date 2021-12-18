@@ -1,18 +1,16 @@
-import React from "react";
-import { useTodos } from "./useTodos";
-import { ListComponent } from "../ListComponent/index";
-import styled from "styled-components";
-import { TodoMaker } from "../TodoMaker";
-import { Modal } from "../Modal/index";
-import { TodoForm } from "../TodoForm/index";
-import { TodoLoading } from "../TodoLoading";
+import React from 'react';
+import { ListComponent } from '../ListComponent/index';
+import styled from 'styled-components';
+import { TodoMaker } from '../TodoMaker';
+import { Modal } from '../Modal/index';
+import { TodoForm } from '../TodoForm/index';
+import { TodoLoading } from '../TodoLoading';
 
 const StyledSection = styled.section`
   list-style: none;
   border-radius: 0.5rem;
   background-color: var(--secondary-color);
   height: 50vh;
-  
 `;
 const StyledUl = styled.ul`
   height: 100%;
@@ -21,7 +19,7 @@ const StyledUl = styled.ul`
   & > h1 {
     padding: 3rem;
     font-size: 3rem;
-   text-align: center; 
+    text-align: center;
   }
   &::-webkit-scrollbar {
     background-color: transparent;
@@ -38,30 +36,100 @@ const StyledWarningText = styled.p`
   padding: 0.5rem;
 `;
 
-const StyledNotification = styled.h1`
-
-
-
-`;
+const StyledNotification = styled.h1``;
 
 function ListContainer() {
+  function useLocalStorage(itemName, initialValue) {
+    const [item, setItem] = React.useState(initialValue);
+    const [error, setError] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+    const [itemsToLoad] = React.useState(
+      JSON.parse(localStorage.getItem(itemName))
+    );
+
+    React.useEffect(() => {
+      setTimeout(() => {
+        try {
+          const localStorageItem = localStorage.getItem(itemName);
+          let parsedItem;
+          if (!localStorageItem) {
+            localStorage.setItem('TODO_V1', JSON.stringify(initialValue));
+            parsedItem = initialValue;
+          } else {
+            parsedItem = JSON.parse(localStorageItem);
+          }
+          setLoading(false);
+
+          setItem(parsedItem);
+        } catch (error) {
+          setError(error);
+        }
+      }, 3000);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const saveItem = (newItem) => {
+      try {
+        const stringifiedItem = JSON.stringify(newItem);
+        localStorage.setItem(itemName, stringifiedItem);
+        setItem(newItem);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    return {
+      item,
+      saveItem,
+      loading,
+      error,
+      itemsToLoad,
+    };
+  }
+
   const {
-    completeTodo,
-    deleteTodo,
-    setValue,
-    toggleModal,
-    todos,
-    createTodo,
-    onOpenModal,
-    value,
-    warning,
-    setWarning,
-    error,
+    item: todos,
+    saveItem: saveTodos,
     loading,
+    error,
     itemsToLoad,
-    totalTodos
-  } = useTodos();
-  console.log(itemsToLoad);
+  } = useLocalStorage('TODOS_V1', []);
+
+  const [toggleModal, setToggleModal] = React.useState(false);
+  const [value, setValue] = React.useState('');
+  const [warning, setWarning] = React.useState(false);
+  const totalTodos = todos.length;
+
+  const completeTodo = (text) => {
+    const todoIndex = todos.findIndex((todo) => todo.text === text);
+    const newTodos = [...todos];
+    if (!newTodos[todoIndex].completed) {
+      newTodos[todoIndex].completed = true;
+    } else {
+      newTodos[todoIndex].completed = false;
+    }
+    saveTodos(newTodos);
+  };
+
+  const deleteTodo = (text) => {
+    const todoIndex = todos.findIndex((todo) => todo.text === text);
+    const newTodos = [...todos];
+    newTodos.splice(todoIndex, 1);
+    saveTodos(newTodos);
+  };
+
+  const onOpenModal = () => {
+    setToggleModal((prevState) => !prevState);
+  };
+
+  const createTodo = (text) => {
+    const newTodo = [{ text: text, completed: false }];
+    const newTodos = [...newTodo, ...todos];
+    saveTodos(newTodos);
+    onOpenModal();
+    setValue('');
+  };
+
+
   return (
     <>
       {warning && <StyledWarningText>Establece un valor</StyledWarningText>}
@@ -74,12 +142,19 @@ function ListContainer() {
       />
       <StyledSection>
         <StyledUl>
-          
-          {error && <StyledNotification>Hubo un error en la carga de Todos</StyledNotification>}
+          {error && (
+            <StyledNotification>
+              Hubo un error en la carga de Todos
+            </StyledNotification>
+          )}
 
-          {loading && <TodoLoading itemsToLoad={itemsToLoad}/>}
+          {loading && <TodoLoading itemsToLoad={itemsToLoad} />}
 
-          {!loading && !totalTodos && <StyledNotification>Bienvenidx #TrueHomer <br/> Crea tu primera tarea</StyledNotification>}
+          {!loading && !totalTodos && (
+            <StyledNotification>
+              Bienvenidx #TrueHomer <br /> Crea tu primera tarea
+            </StyledNotification>
+          )}
 
           {todos.map((todo) => (
             <ListComponent

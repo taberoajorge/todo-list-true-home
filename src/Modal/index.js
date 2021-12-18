@@ -1,6 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import styled from "styled-components";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 
 const StyledModal = styled.div`
     background-color: rgba(32,35,41,.8);
@@ -21,7 +21,7 @@ function Modal({ children }) {
       <StyledModal>
         {children}
       </StyledModal>, 
-      document.getElementById("modal")
+      document.getElementById('modal')
 );}
 
 export { Modal };

@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-
+import React from 'react';
+import styled from 'styled-components';
+import {AddToQueue} from 'styled-icons/boxicons-regular/';
 const StyledCreateInput = styled.input`
   width: 100%;
   background-color: var(--secondary-color);
@@ -54,12 +54,9 @@ function TodoMaker({ onOpenModal, value, setValue, setWarning }) {
   return (
     <section>
       <StyledForm onSubmit={(event)=> event.preventDefault()}>
-        <StyledCreateInput placeholder="Crea tu tarea!" value={value} onChange={onType} autoComplete="off" />
-        <button onClick={OnClickButton} type="button">
-          <img
-            src="https://img.icons8.com/material-outlined/24/ffffff/create.png"
-            alt="create"
-          />
+        <StyledCreateInput placeholder='Crea tu tarea!' value={value} onChange={onType} autoComplete='off' />
+        <button onClick={OnClickButton} type='submit'>
+        <AddToQueue size={20} color='white'/>
         </button>
       </StyledForm>
     </section>
