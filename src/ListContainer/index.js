@@ -39,6 +39,15 @@ const StyledWarningText = styled.p`
 `;
 
 function ListContainer() {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const { todos, error, loading } = state;
+
+  const [toggleModal, setToggleModal] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const [warning, setWarning] = React.useState(false);
+  const localStorageItem = localStorage.getItem("TODOS_V1");
+  const totalTodos = todos.length;
+
   const onError = (error) => {
     dispatch({ type: actionTypes.error, payload: error });
   };
@@ -48,15 +57,6 @@ function ListContainer() {
   const onSave = (item) => {
     dispatch({ type: actionTypes.save, payload: item });
   };
-
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  const { todos, error, loading } = state;
-
-  const [toggleModal, setToggleModal] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  const [warning, setWarning] = React.useState(false);
-  const localStorageItem = localStorage.getItem("TODOS_V1");
-  const totalTodos = todos.length;
 
   React.useEffect(() => {
     setTimeout(() => {
