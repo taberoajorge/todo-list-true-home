@@ -19,6 +19,7 @@ const StyledButton = styled.button`
   background-color: ${(props) =>
     props.completed ? 'var(--check)' : 'transparent'};
   border: 0.2rem solid var(--border-color);
+  min-width: 2rem;
   width: 2rem;
   height: 2rem;
   position: relative;
@@ -35,7 +36,12 @@ const StyledDeleteButton = styled.button`
 `;
 const StyledCheckBox = styled.div`
   display: flex;
+  align-items: center;
   & > p {
+    text-overflow: ellipsis;
+    width: 40rem;
+    overflow: hidden;
+    white-space: nowrap;
     margin-left: 1rem;
     text-decoration: ${(props) => (props.completed ? 'line-through' : '')};
     color: ${(props) =>

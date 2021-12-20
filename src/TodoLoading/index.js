@@ -29,7 +29,7 @@ function TodoLoading({ itemsToLoad }) {
     return null;
   } else {
     return (
-      <>
+      <React.Fragment>
         {itemsToLoad.map((todo) => (
           <StyledContainer key={todo.text}>
             <StyledCircle />
@@ -37,7 +37,7 @@ function TodoLoading({ itemsToLoad }) {
             <StyledCircle />
           </StyledContainer>
         ))}
-      </>
+      </React.Fragment>
     );
   }
 }

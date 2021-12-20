@@ -5,13 +5,16 @@ const StyledForm = styled.form`
   width: 30rem;
   background-color: var(--secondary-color);
   border: none;
-  height: 13rem;
+  height: 20rem;
   margin-left: 5rem;
   margin-right: 5rem;
   padding: 1.5rem;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
   text-align: center;
+  align-items: center;
 
 `;
 const StyledLabel = styled.label`
@@ -20,7 +23,7 @@ const StyledLabel = styled.label`
   display:flex;
   flex-direction: column;
 `;
-const StyledInput = styled.input`
+const StyledInput = styled.textarea`
   color: var(--text-color);
   border-radius: 0.5rem;
   background: none;
@@ -37,7 +40,8 @@ const StyledInput = styled.input`
 `;
 const StyledButton = styled.button`
   margin-left: 1rem;
-  width: 7rem;
+  width: 10rem;
+  height: 3rem;
   padding: 0.2rem;
   border-radius: 0.5rem;
   border: 0.1rem solid var(--border-color);
@@ -45,21 +49,20 @@ const StyledButton = styled.button`
   background-color: var(--border-color);
 `;
 
-
-
 function TodoForm({ onOpenModal, createTodo, value}) {
 
-    const onCreateTodo = (event) => {
-    event.preventDefault()
-    createTodo(event.currentTarget.elements.todo.value)
+    const onCreateTodo = ({target: {todo: {value}}}) => {
+    createTodo(value)
   };
 
   return (
-    <StyledForm onSubmit={onCreateTodo}>
+    <StyledForm onSubmit={(event)=>{
+      event.preventDefault() 
+      onCreateTodo(event)
+      }}>
       <StyledLabel htmlFor='todo'>
         <span>Estas seguro de crear esta tarea?</span>
         <StyledInput
-          type='text'
           id='todo'
           defaultValue={value}
         />

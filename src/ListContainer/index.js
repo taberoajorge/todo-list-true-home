@@ -1,10 +1,10 @@
-import React from 'react';
-import { ListComponent } from '../ListComponent/index';
-import styled from 'styled-components';
-import { TodoMaker } from '../TodoMaker';
-import { Modal } from '../Modal/index';
-import { TodoForm } from '../TodoForm/index';
-import { TodoLoading } from '../TodoLoading';
+import React from "react";
+import { ListComponent } from "../ListComponent/index";
+import styled from "styled-components";
+import { TodoMaker } from "../TodoMaker";
+import { Modal } from "../Modal/index";
+import { TodoForm } from "../TodoForm/index";
+import { TodoLoading } from "../TodoLoading";
 
 const StyledSection = styled.section`
   list-style: none;
@@ -36,67 +36,52 @@ const StyledWarningText = styled.p`
   padding: 0.5rem;
 `;
 
-const StyledNotification = styled.h1``;
-
 function ListContainer() {
-  function useLocalStorage(itemName, initialValue) {
-    const [item, setItem] = React.useState(initialValue);
-    const [error, setError] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
-    const [itemsToLoad] = React.useState(
-      JSON.parse(localStorage.getItem(itemName))
-    );
+  const onError = (error) => {
+    dispatch({ type: actionTypes.error, payload: error });
+  };
+  const onSuccess = (item) => {
+    dispatch({ type: actionTypes.success, payload: item });
+  };
+  const onSave = (item) => {
+    dispatch({ type: actionTypes.save, payload: item });
+  };
 
-    React.useEffect(() => {
-      setTimeout(() => {
-        try {
-          const localStorageItem = localStorage.getItem(itemName);
-          let parsedItem;
-          if (!localStorageItem) {
-            localStorage.setItem('TODO_V1', JSON.stringify(initialValue));
-            parsedItem = initialValue;
-          } else {
-            parsedItem = JSON.parse(localStorageItem);
-          }
-          setLoading(false);
-
-          setItem(parsedItem);
-        } catch (error) {
-          setError(error);
-        }
-      }, 3000);
-    }, []);
-
-    const saveItem = (newItem) => {
-      try {
-        const stringifiedItem = JSON.stringify(newItem);
-        localStorage.setItem(itemName, stringifiedItem);
-        setItem(newItem);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    return {
-      item,
-      saveItem,
-      loading,
-      error,
-      itemsToLoad,
-    };
-  }
-
-  const {
-    item: todos,
-    saveItem: saveTodos,
-    loading,
-    error,
-    itemsToLoad,
-  } = useLocalStorage('TODOS_V1', []);
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const { todos, error, loading } = state;
 
   const [toggleModal, setToggleModal] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState("");
   const [warning, setWarning] = React.useState(false);
+  const localStorageItem = localStorage.getItem("TODOS_V1");
   const totalTodos = todos.length;
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      try {
+        let parsedItem;
+        if (!localStorageItem) {
+          localStorage.setItem("TODOS_V1", JSON.stringify([]));
+          parsedItem = [];
+        } else {
+          parsedItem = JSON.parse(localStorageItem);
+        }
+        onSuccess(parsedItem);
+      } catch (error) {
+        onError(error);
+      }
+    }, 3000);
+  }, []);
+
+  const saveItem = (newItem) => {
+    try {
+      const stringifiedItem = JSON.stringify(newItem);
+      localStorage.setItem("TODOS_V1", stringifiedItem);
+      onSave(newItem);
+    } catch (error) {
+      onError(error);
+    }
+  };
 
   const completeTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
@@ -106,14 +91,14 @@ function ListContainer() {
     } else {
       newTodos[todoIndex].completed = false;
     }
-    saveTodos(newTodos);
+    saveItem(newTodos);
   };
 
   const deleteTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
-    saveTodos(newTodos);
+    saveItem(newTodos);
   };
 
   const onOpenModal = () => {
@@ -123,37 +108,26 @@ function ListContainer() {
   const createTodo = (text) => {
     const newTodo = [{ text: text, completed: false }];
     const newTodos = [...newTodo, ...todos];
-    saveTodos(newTodos);
+    saveItem(newTodos);
     onOpenModal();
-    setValue('');
+    setValue("");
   };
 
-
   return (
-    <>
+    <React.Fragment>
       {warning && <StyledWarningText>Establece un valor</StyledWarningText>}
       <TodoMaker
         setWarning={setWarning}
         value={value}
         setValue={setValue}
         onOpenModal={onOpenModal}
-        createTodo={createTodo}
       />
       <StyledSection>
         <StyledUl>
-          {error && (
-            <StyledNotification>
-              Hubo un error en la carga de Todos
-            </StyledNotification>
-          )}
 
-          {loading && <TodoLoading itemsToLoad={itemsToLoad} />}
-
-          {!loading && !totalTodos && (
-            <StyledNotification>
-              Bienvenidx #TrueHomer <br /> Crea tu primera tarea
-            </StyledNotification>
-          )}
+          {error && <h1>Hubo un error en la carga de Todos</h1>}
+          {loading && !error && (<TodoLoading itemsToLoad={JSON.parse(localStorageItem)} />)}
+          {!loading && !totalTodos && (<h1>Bienvenidx #TrueHomer <br /> Crea tu primera tarea</h1>)}
 
           {todos.map((todo) => (
             <ListComponent
@@ -170,15 +144,54 @@ function ListContainer() {
       {toggleModal && (
         <Modal>
           <TodoForm
-            setValue={setValue}
             value={value}
             createTodo={createTodo}
             onOpenModal={onOpenModal}
           />
         </Modal>
       )}
-    </>
+    </React.Fragment>
   );
 }
+
+const actionTypes = {
+  error: "ERROR",
+  success: "SUCCESS",
+  save: "SAVE",
+};
+
+const reducer = (state, { type, payload }) => {
+  switch (type) {
+    case actionTypes.error:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case actionTypes.success:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        todos: payload,
+      };
+    case actionTypes.save:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        todos: payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const initialState = {
+  todos: [],
+  error: false,
+  loading: true,
+};
 
 export { ListContainer };

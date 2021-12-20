@@ -39,9 +39,9 @@ const StyledForm = styled.form`
 
 
 function TodoMaker({ onOpenModal, value, setValue, setWarning }) {
-  const onType = (event) => {
+  const onType = ({target: {value}}) => {
     setWarning(false);
-    setValue(event.target.value);
+    setValue(value);
   };
   const OnClickButton = () => {
     if (!value) {
