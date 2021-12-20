@@ -41,7 +41,7 @@ const StyledCheckBox = styled.div`
   width: 90%;
 
   & > p {
-    width: 30rem;
+    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
