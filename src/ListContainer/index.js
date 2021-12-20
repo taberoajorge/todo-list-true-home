@@ -11,9 +11,11 @@ const StyledSection = styled.section`
   border-radius: 0.5rem;
   background-color: var(--secondary-color);
   height: 50vh;
+  width: 100%;
 `;
 const StyledUl = styled.ul`
   height: 100%;
+  width: 100%;
   overflow: scroll;
   scroll-behavior: smooth;
   & > h1 {

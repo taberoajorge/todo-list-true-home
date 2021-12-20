@@ -26,7 +26,7 @@ const GlobalStyles = createGlobalStyle`
     body {
         background-color: var(--main-color);
         height: 100vh;
-        width: 80vw;
+        // width: 79vw;
         margin: auto;
         display: flex;
         justify-content: center;
@@ -34,7 +34,7 @@ const GlobalStyles = createGlobalStyle`
          }
     
       #root{
-        width: 40rem;
+        width: 33rem;
       }
     
       @media (min-width: 600px){

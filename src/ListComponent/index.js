@@ -13,6 +13,7 @@ const StyleTodoItem = styled.li`
   font-size: 1.8rem;
   font-weight: var(--text-weigth);
   color: var(--text-color);
+  width: 100%
 `;
 
 const StyledButton = styled.button`
@@ -37,15 +38,18 @@ const StyledDeleteButton = styled.button`
 const StyledCheckBox = styled.div`
   display: flex;
   align-items: center;
+  width: 90%;
+
   & > p {
+    width: 30rem;
     text-overflow: ellipsis;
-    width: 40rem;
     overflow: hidden;
     white-space: nowrap;
     margin-left: 1rem;
     text-decoration: ${(props) => (props.completed ? 'line-through' : '')};
     color: ${(props) =>
       props.completed ? 'var(--border-color)' : 'var(--text-color)'};
+      
   }
 `;
 
