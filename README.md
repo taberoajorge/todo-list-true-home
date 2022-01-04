@@ -1,5 +1,5 @@
 ## TODO LIST 
- It's just a basic todo-list. Thanks for the opportunity, enjoy, future team!!
+ It's just a basic todo-list.
  
 ## Important
 
