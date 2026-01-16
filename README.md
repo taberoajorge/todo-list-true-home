@@ -1,24 +1,26 @@
-## TODO LIST 
- It's just a basic todo-list.
- 
-## Important
+# Todo List Practice
 
-Don't forget clone repo and execute:
+Aplicación de lista de tareas con React.
 
-### `npm install`
+## Tecnologías
 
-Then...
+- React
+- JavaScript
 
-## Available Scripts
+## Instalación
 
-In the project directory, you can run:
+```bash
+npm install
+npm start
+```
 
-### `npm start`
+## Funcionalidades
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Crear tareas
+- Marcar como completadas
+- Eliminar tareas
+- Modal para formulario
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Propósito
 
-
+Proyecto de práctica para aprender React y manejo de estado.
