@@ -24,3 +24,5 @@ npm start
 ## Propósito
 
 Proyecto de práctica para aprender React y manejo de estado.
+
+LICENSE: MIT
